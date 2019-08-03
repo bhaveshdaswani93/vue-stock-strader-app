@@ -1,31 +1,65 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div class="container" >
+    <app-header></app-header>
+    <div class="row">
+      <div class="col">
+        <transition name='slide' mode="out-in">
+          <router-view/>
+        </transition>
+      </div>
     </div>
-    <router-view/>
+    
   </div>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
+  <script>
+  import Header from "./components/Header.vue";
+  import Stocks from "./data/stocks";
+  export default {
+    components:{
+      appHeader:Header
+    },
+    created(){
+      this.$store.dispatch('stocks/initStocks',Stocks)
+    }
+  }
+  </script>
+  
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+<style scoped>
+  body {
+    padding:30px;
+  }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+  .slide-enter-active {
+    animation:slide-in 0.5s forwards
+  }
+
+  .slide-leave-active {
+    animation: slide-out 0.5s forwards;
+  }
+
+
+  @keyframes slide-in {
+    from {
+      opacity:0;
+      transform: translateY(-30px)
+    }
+    to {
+      opacity:1;
+      transform:translateY(0);
+    }
+  }
+
+  @keyframes slide-out {
+    from {
+      opacity:1;
+      /* transform: translateY(-30px) */
+    }
+    to {
+      opacity:0;
+      transform:translateY(-30px);
+    }
+  }
+
 </style>
